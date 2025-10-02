@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
 } from '../components/ui/card.jsx';
+import { useState } from 'react';
 
 export default function FormLayout() {
   const inputObjects = [
@@ -24,6 +24,14 @@ export default function FormLayout() {
     },
   ];
 
+  const [formData, setFormData] = useState(
+    inputObjects.reduce((acc, input) => {
+      acc[input.name] =
+        input.name === 'Priority' ? input.optionsObj[0].value : '';
+      return acc;
+    }, {})
+  );
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -33,11 +41,22 @@ export default function FormLayout() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log('form tersubmit uy');
+            console.log(formData);
+            setFormData(
+              inputObjects.reduce((acc, input) => {
+                acc[input.name] =
+                  input.name === 'Priority' ? input.optionsObj[0].value : '';
+                return acc;
+              }, {})
+            );
           }}
         >
           <div className="flex flex-col gap-3">
-            <InputLayout inputObj={inputObjects} />
+            <InputLayout
+              formData={formData}
+              setFormData={setFormData}
+              inputObj={inputObjects}
+            />
           </div>
           <Button variant={'default'} type="submit" className="w-full mt-6">
             Add Task
