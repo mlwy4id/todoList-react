@@ -6,34 +6,15 @@ import {
   CardTitle,
   CardContent,
 } from '../components/ui/card.jsx';
-import { useState } from 'react';
 
-export default function FormLayout() {
-  const inputObjects = [
-    { name: 'Task Name', type: 'text' },
-    { name: 'Deadline', type: 'date' },
-    {
-      name: 'Priority',
-      type: 'select',
-      optionsObj: [
-        { name: 1, value: 'priorityOne' },
-        { name: 2, value: 'priorityTwo' },
-        { name: 3, value: 'priorityThree' },
-        { name: 4, value: 'priorityFour' },
-      ],
-    },
-  ];
-
-  const [formData, setFormData] = useState(
-    inputObjects.reduce((acc, input) => {
-      acc[input.name] =
-        input.name === 'Priority' ? input.optionsObj[0].value : '';
-      return acc;
-    }, {})
-  );
-
+export default function FormLayout({
+  formData,
+  setFormData,
+  inputObjects,
+  setTodos,
+}) {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm bg-[#F3F4F6]">
       <CardHeader>
         <CardTitle>Add Task to Your List</CardTitle>
       </CardHeader>
@@ -41,11 +22,20 @@ export default function FormLayout() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(formData);
+
+            setTodos((prev) => {
+              return [...prev, formData];
+            });
+
             setFormData(
               inputObjects.reduce((acc, input) => {
-                acc[input.name] =
-                  input.name === 'Priority' ? input.optionsObj[0].value : '';
+                if (input.name === 'Id') {
+                  acc[input.name] = crypto.randomUUID();
+                } else if (input.name === 'Priority') {
+                  acc[input.name] = input.optionsObj[0].value;
+                } else {
+                  acc[input.name] = '';
+                }
                 return acc;
               }, {})
             );

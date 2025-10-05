@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export default function InputLayout({ formData, setFormData, inputObj }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -9,11 +7,15 @@ export default function InputLayout({ formData, setFormData, inputObj }) {
     }));
   };
 
-  const inputList = inputObj.map((input, index) => {
+  const inputList = inputObj.map((input) => {
+    if (input.name == 'Id') {
+      return;
+    }
+    
     if (input.type == 'select') {
       const options = input.optionsObj;
       return (
-        <div key={index} className="flex flex-col gap-1">
+        <div key={input.id} className="flex flex-col gap-1">
           <label className="font-bold">{input.name}</label>
           <select
             id={input.name}
@@ -22,9 +24,9 @@ export default function InputLayout({ formData, setFormData, inputObj }) {
             onChange={handleChange}
             value={formData[input.name]}
           >
-            {options.map((option, i) => {
+            {options.map((option) => {
               return (
-                <option key={i} value={option.value}>
+                <option key={option.id} value={option.value}>
                   {option.name}
                 </option>
               );
@@ -35,7 +37,7 @@ export default function InputLayout({ formData, setFormData, inputObj }) {
     }
 
     return (
-      <div key={index} className="flex flex-col gap-1">
+      <div key={input.id} className="flex flex-col gap-1">
         <label className="font-bold">{input.name}</label>
         <input
           id={input.name}
