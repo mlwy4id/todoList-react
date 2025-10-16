@@ -1,4 +1,9 @@
-export default function InputLayout({ formData, setFormData, inputObj }) {
+import { useContext } from 'react';
+import { formContext } from '../pages/Home';
+
+export default function InputLayout() {
+  const { formData, setFormData, inputObjects } = useContext(formContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -7,11 +12,11 @@ export default function InputLayout({ formData, setFormData, inputObj }) {
     }));
   };
 
-  const inputList = inputObj.map((input) => {
+  const inputList = inputObjects.map((input) => {
     if (input.name == 'Id') {
       return;
     }
-    
+
     if (input.type == 'select') {
       const options = input.optionsObj;
       return (

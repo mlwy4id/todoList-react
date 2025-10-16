@@ -1,11 +1,15 @@
+import { useContext } from 'react';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
 } from '../components/ui/card.jsx';
+import { todosContext } from '../pages/Home.jsx';
 
-export default function TodosLayout({ todos }) {
+export default function TodosLayout() {
+  const todos = useContext(todosContext);
+
   return (
     <div className="w-full flex flex-col gap-3 justify-center items-center">
       {todos.map((todo) => {

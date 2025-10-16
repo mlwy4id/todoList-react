@@ -1,6 +1,9 @@
 import FormLayout from '../layouts/FormLayout.jsx';
 import TodosLayout from '../layouts/TodosLayout.jsx';
-import { useEffect, useRef, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
+
+export const todosContext = createContext();
+export const formContext = createContext();
 
 export default function Home() {
   const inputObjects = [
@@ -46,7 +49,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if(isFirstRender.current) {
+    if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
@@ -58,17 +61,17 @@ export default function Home() {
     <div className="flex justify-evenly m-5">
       <div className="w-[40%] flex flex-col gap-5 items-center">
         <h1>Add New Task</h1>
-        <FormLayout
-          formData={formData}
-          setFormData={setFormData}
-          inputObjects={inputObjects}
-          setTodos={setTodos}
-          todos={todos}
-        />
+        <formContext.Provider
+          value={{ formData, setFormData, inputObjects, setTodos, todos }}
+        >
+          <FormLayout />
+        </formContext.Provider>
       </div>
       <div className="w-[40%] flex flex-col gap-5 items-center">
         <h1>Tasks List</h1>
-        <TodosLayout todos={todos} />
+        <todosContext.Provider value={todos}>
+          <TodosLayout />
+        </todosContext.Provider>
       </div>
     </div>
   );
